@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/vacation_management
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop  # Usuwa i tworzy tabele przy każdym uruchomieniu
+    show-sql: true
+
+# Tymczasowo wyłączamy Spring Security dla ułatwienia testowania
+spring.autoconfigure.exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
