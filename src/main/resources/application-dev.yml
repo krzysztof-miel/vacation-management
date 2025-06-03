@@ -7,8 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create-drop  # Usuwa i tworzy tabele przy każdym uruchomieniu
+      ddl-auto: update
     show-sql: true
 
-# Tymczasowo wyłączamy Spring Security dla ułatwienia testowania
 spring.autoconfigure.exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
