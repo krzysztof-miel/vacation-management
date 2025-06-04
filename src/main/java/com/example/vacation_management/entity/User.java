@@ -1,5 +1,6 @@
 package com.example.vacation_management.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -9,8 +10,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+
 @Entity
 @Table(name = "users")
 
@@ -28,6 +28,7 @@ public class User {
     @Column(name = "password_hash", nullable = false)
     @NotBlank(message = "Password is required")
     @Size(min = 6, message = "Password must be at least 6 characters")
+    @JsonIgnore
     private String password;
 
     @Column(name = "first_name", nullable = false)
