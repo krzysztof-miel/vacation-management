@@ -32,16 +32,19 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Publiczne endpointy
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/database/**").permitAll() // Tymczasowo dla testów
+                        .requestMatchers("/api/database/**").permitAll()
 
-                        // Endpointy tylko dla administratorów
                         .requestMatchers("/api/users/**").hasRole("ADMIN")
-                        .requestMatchers("/api/leave-balances/**").hasRole("ADMIN")
+                        .requestMatchers("/api/leave-balances/year/**").hasRole("ADMIN")
+                        .requestMatchers("/api/leave-balances/user/**").hasRole("ADMIN")
+                        .requestMatchers("/api/dashboard/**").hasRole("ADMIN")
                         .requestMatchers("/api/leave-requests/pending").hasRole("ADMIN")
                         .requestMatchers("/api/leave-requests/*/approve").hasRole("ADMIN")
                         .requestMatchers("/api/leave-requests/*/reject").hasRole("ADMIN")
+
+                        .requestMatchers("/api/leave-balances/my/**").authenticated()
+                        .requestMatchers("/api/leave-requests/my/**").authenticated()
 
                         .anyRequest().authenticated()
                 )

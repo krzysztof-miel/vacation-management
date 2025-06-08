@@ -46,6 +46,12 @@ public class LeaveRequestService {
                 .collect(Collectors.toList());
     }
 
+    public List<LeaveRequestDto> getRequestsByUserAndYear(Long userId, Integer year) {
+        return leaveRequestRepository.findByUserIdAndYear(userId, year).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
     public List<LeaveRequestDto> getPendingRequests() {
         return leaveRequestRepository.findPendingRequests().stream()
                 .map(this::convertToDto)

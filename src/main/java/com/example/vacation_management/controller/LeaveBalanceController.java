@@ -4,6 +4,7 @@ package com.example.vacation_management.controller;
 import com.example.vacation_management.dto.LeaveBalanceDto;
 import com.example.vacation_management.entity.LeaveBalance;
 import com.example.vacation_management.service.LeaveBalanceService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,11 +26,34 @@ public class LeaveBalanceController {
         return ResponseEntity.ok(balances);
     }
 
-    @GetMapping("/user/{userId}/current")
-    public ResponseEntity<LeaveBalance> getCurrentYearBalance(@PathVariable Long userId) {
-        return leaveBalanceService.getCurrentYearBalance(userId)
+//    @GetMapping("/user/{userId}/current")
+//    public ResponseEntity<LeaveBalance> getCurrentYearBalance(@PathVariable Long userId) {
+//        return leaveBalanceService.getCurrentYearBalance(userId)
+//                .map(balance -> ResponseEntity.ok(balance))
+//                .orElse(ResponseEntity.notFound().build());
+//    }
+
+    @GetMapping("/my/current")
+    public ResponseEntity<LeaveBalance> getMyCurrentYearBalance(HttpServletRequest request) {
+        Long currentUserId = (Long) request.getAttribute("userId");
+        if (currentUserId == null) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        return leaveBalanceService.getCurrentYearBalance(currentUserId)
                 .map(balance -> ResponseEntity.ok(balance))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/my")
+    public ResponseEntity<List<LeaveBalance>> getMyAllBalances(HttpServletRequest request) {
+        Long currentUserId = (Long) request.getAttribute("userId");
+        if (currentUserId == null) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        List<LeaveBalance> balances = leaveBalanceService.getAllBalancesForUser(currentUserId);
+        return ResponseEntity.ok(balances);
     }
 
     @GetMapping("/user/{userId}/year/{year}")
